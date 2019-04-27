@@ -1,8 +1,9 @@
 import config
+import random
 
 
 class lookup_table():
-	def __init__(n_heavy_hitters=config.n_heavy_hitters, decay=config.decay):
+	def __init__(self, n_heavy_hitters=config.n_heavy_hitters, decay=config.decay):
 		self.table = {}
 		self.n_heavy_hitters = n_heavy_hitters
 		self.decay = decay
@@ -15,11 +16,12 @@ class lookup_table():
 		print("Now, there are %d heavy hitters" % self.n_heavy_hitters)
 
 	def check_hh(self, element):
+		decreasing_frequencies = sorted(list(self.table.values()))[::-1]
 		if element in self.table.keys():
 			# check more stuff
-			if len(list(self.table.keys())) < self.n_heavy_hitters:
+			if len(decreasing_frequencies) < self.n_heavy_hitters + 1:
 				return True
-			elif self.table[element] >= self.table.values().sort()[self.n_heavy_hitters]:
+			elif self.table[element] >= decreasing_frequencies[self.n_heavy_hitters]:
 				return True
 			else:
 				return False
