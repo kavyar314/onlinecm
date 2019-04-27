@@ -10,19 +10,16 @@ class lookup_table():
 	def contains(self, element):
 		return element in self.table.keys()
 
-	# def decay_n_heavy_hitters(self):
-	#	self.n_heavy_hitters = int(self.decay * self.n_heavy_hitters)
+	def decay_n_heavy_hitters(self):
+		self.n_heavy_hitters = int(self.decay * self.n_heavy_hitters)
+		print("Now, there are %d heavy hitters" % self.n_heavy_hitters)
 
-	 def get_hh_thres(self, n, m):
-		return int(self.n_heavy_hitters * self.decay**(n//m))
-
-	def check_hh(self, element, n, m):
+	def check_hh(self, element):
 		if element in self.table.keys():
 			# check more stuff
-			thres_index = self.get_hh_thres(n, m)
-			if len(list(self.table.keys())) < thres_index:
+			if len(list(self.table.keys())) < self.n_heavy_hitters:
 				return True
-			elif self.table[element] >= self.table.values().sort[thres_index]:
+			elif self.table[element] >= self.table.values().sort()[self.n_heavy_hitters]:
 				return True
 			else:
 				return False
@@ -41,18 +38,21 @@ class lookup_table():
 		else:
 			self.table[element] = 1
 
-	def sample_elements(self, hh, n, m):
+	def sample_elements(self, hh, n_samples):
 		'''
 		:param hh: boolean about whether to pick heavy hitters (True), non-heavy hitters (False), or sample uniformly from all elements(None)
 		'''
 		if hh is None:
-			sample_list = self.table.keys()
+			sample_list = list(self.table.keys())
 			# stuff
 		elif hh:
-			sample_list = [x for x in self.table.keys() if self.check_hh(x, n, m)]
+			sample_list = [x for x in self.table.keys() if self.check_hh(x)]
 			# stuff
 		elif not hh:
-			sample_list = [x for x in self.table.keys() if not self.check_hh(x, n, m)]
+			sample_list = [x for x in self.table.keys() if not self.check_hh(x)]
 			# stuff
-		sampled_elements = random.choices()
+		num_samples = min([n_samples, len(sample_list)])
+		sampled_elements = random.choices(sample_list, k=num_samples)
+		labels = [1 if self.check_hh(x) else 0 for x in sampled_elements]
+		return sampled_elements, labels
 

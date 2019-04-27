@@ -17,7 +17,7 @@ def train(verbose=False):
 	nn = nn_model.model()
 	j = 0
 	for i in range(used_data[0].size[0]):
-		if d in oracle.get_elements():
+		if oracle.contains(d):
 			oracle.increment_count(d)
 		else:
 			oracle.add_element(d)
@@ -26,9 +26,10 @@ def train(verbose=False):
 			# train
 			#	collect data
 				#	k positive examples (heavy hitters)
-			positives, y_pos = oracle.sample_elements(hh=True), np.array([1 for _ in range(config.n_heavy_hitters)])
+			positives, y_pos = oracle.sample_elements(hh=True, n_samples=config.half_batch)
 				#	k randomly selected non-heavy hitters
-			negatives, y_neg = oracle.sample_elements(hh=False), np.array([0 for _ in range(config.n_heavy_hitters)])
+			negatives, y_neg = oracle.sample_elements(hh=False, n_samples=config.half_batch)
+			oracle.decay_n_heavy_hitters()
 			full_training_x, full_training_y = np.hstack((positives, negatives)), np.stack((y_pos, y_neg))
 			#	fit for n_gradient_updates epochs
 			nn.fit(full_training_x, full_training_y, batch_size=full_training_x.shape[0], epochs=config.n_gradient_updates, verbose=2)
