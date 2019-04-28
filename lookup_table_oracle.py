@@ -6,6 +6,7 @@ class lookup_table():
 	def __init__(self, n_heavy_hitters=config.n_heavy_hitters, decay=config.decay):
 		self.table = {}
 		self.n_heavy_hitters = n_heavy_hitters
+		self.init_n_heavy_hitters = n_heavy_hitters
 		self.decay = decay
 
 	def contains(self, element):
@@ -16,6 +17,9 @@ class lookup_table():
 		print("Now, there are %d heavy hitters" % self.n_heavy_hitters)
 
 	def check_hh(self, element):
+		'''
+		note that, as implemented, this returns "None" if it's in No Man's Land between current HH threshold and original HH threshold
+		'''
 		decreasing_frequencies = sorted(list(self.table.values()))[::-1]
 		if element in self.table.keys():
 			# check more stuff
@@ -23,7 +27,7 @@ class lookup_table():
 				return True
 			elif self.table[element] >= decreasing_frequencies[self.n_heavy_hitters]:
 				return True
-			else:
+			elif self.table[element] <= decreasing_frequencies[self.init_n_heavy_hitters]:
 				return False
 		else:
 			return False
