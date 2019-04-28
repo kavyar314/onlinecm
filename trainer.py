@@ -28,7 +28,8 @@ def train(verbose=False):
 				#	k positive examples (heavy hitters)
 			positives, y_pos = oracle.sample_elements(hh=True, n_samples=config.half_batch)
 				#	k randomly selected non-heavy hitters
-			negatives, y_neg = oracle.sample_elements(hh=False, n_samples=config.half_batch)
+			actual_n_samples = len(positives)
+			negatives, y_neg = oracle.sample_elements(hh=False, n_samples=actual_n_samples)
 			oracle.decay_n_heavy_hitters()
 			full_training_x = np.array([np.array(list(x)) for x in positives + negatives])
 			full_training_y = np.array(y_pos + y_neg)
