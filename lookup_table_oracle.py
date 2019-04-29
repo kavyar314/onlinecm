@@ -13,8 +13,11 @@ class lookup_table():
 		return element in self.table.keys()
 
 	def decay_n_heavy_hitters(self):
-		self.n_heavy_hitters = int(self.decay * self.n_heavy_hitters)
-		print("Now, there are %d heavy hitters" % self.n_heavy_hitters)
+		if len(self.table.keys()) < self.init_n_heavy_hitters:
+			print("haven't started decaying yet")
+		else:
+			self.n_heavy_hitters = int(self.decay * self.n_heavy_hitters)
+			print("Now, there are %d heavy hitters" % self.n_heavy_hitters)
 
 	def check_hh(self, element):
 		'''
@@ -25,7 +28,7 @@ class lookup_table():
 			# check more stuff
 			if len(decreasing_frequencies) < self.n_heavy_hitters + 1:
 				return True
-			elif self.table[element] >= decreasing_frequencies[self.n_heavy_hitters]:
+			elif self.table[element] > decreasing_frequencies[self.n_heavy_hitters]:
 				return True
 			elif self.table[element] <= decreasing_frequencies[self.init_n_heavy_hitters]:
 				return False
@@ -55,7 +58,7 @@ class lookup_table():
 			sample_list = [x for x in self.table.keys() if self.check_hh(x)]
 			# stuff
 		elif not hh:
-			sample_list = [x for x in self.table.keys() if not self.check_hh(x)]
+			sample_list = [x for x in self.table.keys() if not self.check_hh(x) and self.check_hh(x) is not None]
 			# stuff
 		num_samples = min([n_samples, len(sample_list)])
 		sampled_elements = random.choices(sample_list, k=num_samples)
