@@ -8,11 +8,14 @@ class lookup_table():
 		self.n_heavy_hitters = n_heavy_hitters
 		self.init_n_heavy_hitters = n_heavy_hitters
 		self.decay = decay
+		self.len_stream=0
 
 	def contains(self, element):
 		return element in self.table.keys()
 
 	def decay_n_heavy_hitters(self):
+		# this happens exactly when the model is trained
+		# so we can also purge non-heavy hitters, I think
 		if len(self.table.keys()) < self.init_n_heavy_hitters:
 			print("haven't started decaying yet")
 		else:
@@ -42,10 +45,16 @@ class lookup_table():
 			self.add_element()
 
 	def add_element(self, element):
+		self.len_stream += 1
 		if element in self.table.keys():
 			print("already present")
 		else:
-			self.table[element] = 1
+			if random.random() < self.n_heavy_hitters/self.len_stream:
+				light_el = [x for x in self.table.keys() if not self.check_hh(x) and self.check_hh(x) is not None]
+				self.table.pop(random.choice(light_el))
+				self.table[element] = 1
+			else:
+				pass
 
 	def sample_elements(self, hh, n_samples):
 		'''
