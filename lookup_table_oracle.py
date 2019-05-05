@@ -49,9 +49,13 @@ class lookup_table():
 		if element in self.table.keys():
 			print("already present")
 		else:
-			if random.random() < self.n_heavy_hitters/self.len_stream:
-				light_el = [x for x in self.table.keys() if not self.check_hh(x) and self.check_hh(x) is not None]
-				self.table.pop(random.choice(light_el))
+			light_el = [x for x in self.table.keys() if not self.check_hh(x) and self.check_hh(x) is not None]
+			if len(light_el) < self.n_heavy_hitters:
+				self.table[element] = 1
+			elif random.random() < self.n_heavy_hitters/self.len_stream:
+				remove = random.choice(light_el)
+				# print("removing", remove, "to add", element)
+				self.table.pop(remove)
 				self.table[element] = 1
 			else:
 				pass
