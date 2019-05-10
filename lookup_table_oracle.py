@@ -3,12 +3,13 @@ import random
 
 
 class lookup_table():
-	def __init__(self, n_heavy_hitters=config.n_heavy_hitters, decay=config.decay):
+	def __init__(self, n_heavy_hitters=config.n_heavy_hitters, decay=config.decay, reservoir=config.limit_light):
 		self.table = {}
 		self.n_heavy_hitters = n_heavy_hitters
 		self.init_n_heavy_hitters = n_heavy_hitters
 		self.decay = decay
 		self.len_stream=0
+		self.reservoir = reservoir
 
 	def contains(self, element):
 		return element in self.table.keys()
@@ -23,9 +24,6 @@ class lookup_table():
 			print("Now, there are %d heavy hitters" % self.n_heavy_hitters)
 
 	def check_hh(self, element):
-		'''
-		note that, as implemented, this returns "None" if it's in No Man's Land between current HH threshold and original HH threshold
-		'''
 		decreasing_frequencies = sorted(list(self.table.values()))[::-1]
 		if element in self.table.keys():
 			# check more stuff
@@ -42,9 +40,18 @@ class lookup_table():
 		if element in self.table.keys():
 			self.table[element] += 1
 		else:
-			self.add_element()
+			self.add_element(element)
 
 	def add_element(self, element):
+		if self.reservoir:
+			self.add_element_reservoir(element)
+		else:
+			if element in self.table.keys():
+				print("already present")
+			else:
+				self.table[element] = 1
+
+	def add_element_reservoir(self, element):
 		self.len_stream += 1
 		if element in self.table.keys():
 			print("already present")

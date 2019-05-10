@@ -4,7 +4,7 @@ import random
 import numpy as np
 import os
 
-def load(dataset_name='p_and_p', amount=config.len_stream, verbose=False):
+def load(dataset_name='p_and_p', amount=config.len_stream, start=0, verbose=False):
 	GLOVE_DIR = '.'
 	embeddings_index = {}
 	if verbose:
@@ -21,7 +21,7 @@ def load(dataset_name='p_and_p', amount=config.len_stream, verbose=False):
 		text = open('P_and_P_plaintext.txt').read()
 		words = [a.strip(',;.?,":') for a in text.split()]
 		if amount is not None:
-			used_words = words[:amount]
+			used_words = words[start:amount]
 		else:
 			used_words = words
 		embedded_words = []
