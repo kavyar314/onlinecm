@@ -17,10 +17,7 @@ def train(verbose=False):
 	j = 0
 	for i in range(len(data_x)):
 		d = data_x[i]
-		if oracle.contains(tuple(d)):
-			oracle.increment_count(tuple(d))
-		else:
-			oracle.add_element(tuple(d))
+		oracle.increment_count(tuple(d))
 		j = j+1
 		if j % config.time_between_train == 0 and i != 0:
 			# train
