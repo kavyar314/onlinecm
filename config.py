@@ -14,3 +14,5 @@ len_stream = 1000
 half_batch=16
 
 n_layers=2
+
+limit_light = True
