@@ -81,7 +81,7 @@ class lookup_table():
 			sample_list = [x for x in self.table.keys() if not self.check_hh(x) and self.check_hh(x) is not None]
 			# stuff
 		num_samples = min([n_samples, len(sample_list)])
-		sampled_elements = random.choices(sample_list, k=num_samples)
+		sampled_elements = [random.choice(sample_list) for _ in range(num_samples)]
 		labels = [1 if self.check_hh(x) else 0 for x in sampled_elements]
 		return sampled_elements, labels
 
