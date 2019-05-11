@@ -22,6 +22,7 @@ def train(verbose=False, n_samples=config.half_batch, epochs=config.n_gradient_u
 		oracle.increment_count(tuple(d))
 		j = j+1
 		if j % n_before_update == 0 and i != 0:
+			print(i, j)
 			# train
 			#	collect data
 				#	k positive examples (heavy hitters)
@@ -30,11 +31,21 @@ def train(verbose=False, n_samples=config.half_batch, epochs=config.n_gradient_u
 			actual_n_samples = len(positives)
 			if verbose: print(actual_n_samples)
 			negatives, y_neg = oracle.sample_elements(hh=False, n_samples=actual_n_samples)
-			oracle.decay_n_heavy_hitters()
 			full_training_x = np.array([np.array(list(x)) for x in positives + negatives])
 			full_training_y = np.array(y_pos + y_neg)
-			#	fit for n_gradient_updates epochs
+			print(full_training_x.shape)
+			if i // n_before_update == 0:
+				initial_loss = nn.evaluate(full_training_x, full_training_y)
+				loss_thres = 0.5 * initial_loss
+				print(initial_loss, loss_thres, i)
 			if full_training_x.shape[0] > 0:
+				loss = nn.evaluate(full_training_x, full_training_y)
+				print(loss, loss_thres, i)
+				if loss < loss_thres:
+					oracle.decay_n_heavy_hitters()
+				oracle.flush()
+				#	fit for n_gradient_updates epochs
+				print(full_training_x.shape)
 				nn.fit(full_training_x, full_training_y, batch_size=full_training_x.shape[0], epochs=epochs, verbose=2)
 			else:
 				print("no more samples on which to train")

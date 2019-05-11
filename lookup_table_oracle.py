@@ -27,7 +27,7 @@ class lookup_table():
 		decreasing_frequencies = sorted(list(self.table.values()))[::-1]
 		if element in self.table.keys():
 			# check more stuff
-			if len(decreasing_frequencies) < self.n_heavy_hitters + 1:
+			if len(decreasing_frequencies) <= self.n_heavy_hitters + 1:
 				return True
 			elif self.table[element] > decreasing_frequencies[self.n_heavy_hitters]:
 				return True
@@ -52,7 +52,6 @@ class lookup_table():
 				self.table[element] = 1
 
 	def add_element_reservoir(self, element):
-		print("reservoir")
 		self.len_stream += 1
 		if element in self.table.keys():
 			print("already present")
@@ -82,7 +81,9 @@ class lookup_table():
 			sample_list = [x for x in self.table.keys() if not self.check_hh(x) and self.check_hh(x) is not None]
 			# stuff
 		num_samples = min([n_samples, len(sample_list)])
-		sampled_elements = [random.choice(sample_list) for _ in num_samples]
-		labels = [1 if self.check_hh(x) else 0 for x in sampled_elements]
+		sampled_elements = [random.choice(sample_list) for _ in range(num_samples)]
+		labels = [self.table[x] for x in sampled_elements]
 		return sampled_elements, labels
 
+	def flush(self):
+		self.table = {}
