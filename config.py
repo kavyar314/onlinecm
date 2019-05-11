@@ -16,3 +16,7 @@ half_batch=16
 n_layers=2
 
 limit_light = True
+
+aol_file = 'user-ct-test-collection-02.txt'
+
+trun_len = 60
