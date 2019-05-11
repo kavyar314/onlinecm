@@ -71,6 +71,7 @@ class lookup_table():
 		'''
 		:param hh: boolean about whether to pick heavy hitters (True), non-heavy hitters (False), or sample uniformly from all elements(None)
 		'''
+		n_elements = sum(list(self.table.values()))
 		if hh is None:
 			sample_list = list(self.table.keys())
 			# stuff
@@ -82,7 +83,7 @@ class lookup_table():
 			# stuff
 		num_samples = min([n_samples, len(sample_list)])
 		sampled_elements = [random.choice(sample_list) for _ in range(num_samples)]
-		labels = [self.table[x] for x in sampled_elements]
+		labels = [self.table[x]/n_elements for x in sampled_elements]
 		return sampled_elements, labels
 
 	def flush(self):
