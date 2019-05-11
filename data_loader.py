@@ -31,9 +31,13 @@ def load(dataset_name, amount=config.len_stream, start=0, verbose=False):
 		del embeddings_index
 		return words, embedded_words
 	if dataset_name == 'aol':
+		if verbose:
+			print("processing aol dataset")
 		with open(config.aol_file, 'r') as f:
 		    x = f.readlines()
 		queries = [lin.split('\t')[1] for lin in x]
+		if verbose:
+			print("taking subset")
 		if amount is not None:
 			used_queries = queries[start:amount]
 		else:
