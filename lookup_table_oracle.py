@@ -25,13 +25,14 @@ class lookup_table():
 
 	def check_hh(self, element):
 		decreasing_frequencies = sorted(list(self.table.values()))[::-1]
+		# print(len(decreasing_frequencies), self.n_heavy_hitters + 1, self.init_n_heavy_hitters + 1)
 		if element in self.table.keys():
 			# check more stuff
 			if len(decreasing_frequencies) <= self.n_heavy_hitters + 1:
 				return True
 			elif self.table[element] > decreasing_frequencies[self.n_heavy_hitters]:
 				return True
-			elif self.table[element] <= decreasing_frequencies[self.init_n_heavy_hitters]:
+			elif self.table[element] <= decreasing_frequencies[self.n_heavy_hitters]:
 				return False
 		else:
 			return False
