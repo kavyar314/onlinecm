@@ -25,11 +25,13 @@ def load(dataset_name, amount=config.len_stream, start=0, verbose=False):
 		else:
 			used_words = words
 		embedded_words = []
+		words_having_embeddings = []
 		for word in used_words:
 			if word in embeddings_index.keys():
 				embedded_words.append(embeddings_index[word])
+				words_having_embeddings.append(word)
 		del embeddings_index
-		return words, embedded_words
+		return words_having_embeddings, embedded_words
 	if dataset_name == 'aol':
 		if verbose:
 			print("processing aol dataset")
