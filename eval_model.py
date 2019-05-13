@@ -31,7 +31,7 @@ def gen_lookup_table(dataset, amount, verbose):
 	raw_data, data = data_loader.load(dataset, amount=amount, verbose=verbose)
 
 	for d in raw_data:
-		oracle_table.increment_count(tuple(d))
+		oracle_table.increment_count(d)
 	return oracle_table, dict(zip(raw_data, data))
 		
 def frac_within_epsilon(pred_y, act_y, eps=0.001):
