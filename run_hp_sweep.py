@@ -18,7 +18,7 @@ def hp_sweep():
 					print("completed:", params)
 					pp_f, ap_f, pn_f, an_f = eval_model.evaluate_model(model, full=True)
 					pp_n, ap_n, pn_n, an_n = eval_model.evaluate_model(model, full=False)
-					write_string = "%d, %d, %d, %d, %04f, %04f, %04f, %04f\n" % (h, t, decay, ep, pp_f/ap_f, pn_f/an_f, pp_n/ap_n, pn_n/an_n)
+					write_string = "%d, %d, %02f, %d, %04f, %04f, %04f, %04f\n" % (h, t, decay, ep, pp_f/ap_f, pn_f/an_f, pp_n/ap_n, pn_n/an_n)
 					with open(outfile, 'a') as f:
 						f.write(write_string)
 
