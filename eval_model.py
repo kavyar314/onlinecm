@@ -35,7 +35,7 @@ def gen_lookup_table(dataset, amount, verbose):
 	return oracle_table, dict(zip(raw_data, data))
 		
 def frac_within_epsilon(pred_y, act_y, eps=0.001):
-	return sum([(pred_y[p]-act_y[p]) <= eps for p in pred_y_hh])/len(hh_y)
+	return sum([(pred_y[p]-act_y[p]) <= eps for p in pred_y])/len(act_y)
 
 def k_hh(pred_y, act_y, hh):
 	one_over_k = sum(act_y)/len(act_y)
