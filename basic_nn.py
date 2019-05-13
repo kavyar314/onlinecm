@@ -24,8 +24,8 @@ def lstm_model(n_units=256, n_layers=1):
 	model.add(LSTM(n_units, input_shape=(config.trun_len, config.trun_len)))
 
 	model.add(Dense(50, activation='relu'))
-	model.add(Dense(10, activation='relu'))
-	model.add(Dense(1, activation='linear'))
+	model.add(Dense(10, activation='linear'))
+	model.add(Dense(1, activation='sigmoid'))
 
 	model.compile(loss='mean_squared_error', optimizer='sgd')
 
