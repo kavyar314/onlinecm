@@ -21,7 +21,7 @@ def load(dataset_name, amount=config.len_stream, start=0, verbose=False):
 		text = open('P_and_P_plaintext.txt').read()
 		words = [a.strip(',;.?,":') for a in text.split()]
 		if amount is not None:
-			used_words = words[start:amount]
+			used_words = words[start : start + amount]
 		else:
 			used_words = words
 		embedded_words = []
@@ -39,7 +39,7 @@ def load(dataset_name, amount=config.len_stream, start=0, verbose=False):
 		if verbose:
 			print("taking subset")
 		if amount is not None:
-			used_queries = queries[start:amount]
+			used_queries = queries[start : start + amount]
 		else:
 			used_queries = queries
 		return used_queries[1:], queries_to_vec(used_queries[1:])
