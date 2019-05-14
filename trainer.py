@@ -7,19 +7,20 @@ from keras.models import Sequential
 import numpy as np
 
 def train(dataset, verbose=False, n_samples=config.half_batch, epochs=config.n_gradient_updates, 
-			n_heavy_hitters=config.n_heavy_hitters, decay=config.decay, n_before_update=config.time_between_train):
-	params = {"n_samples": n_samples, "epochs": epochs, "n_heavy_hitters": n_heavy_hitters, "decay": decay, "n_before_update": n_before_update}
+			n_heavy_hitters=config.n_heavy_hitters, decay=config.decay, n_before_update=config.time_between_train, 
+			amount=config.len_stream, n_layers=config.n_layers):
+	params = {"n_samples": n_samples, "epochs": epochs, "n_heavy_hitters": n_heavy_hitters, "decay": decay, "n_before_update": n_before_update, "n_layers": n_layers}
 	if verbose:
 		print("entered training module")
-	raw, data_x = data_loader.load(dataset, verbose=verbose, amount=config.len_stream)
+	raw, data_x = data_loader.load(dataset, verbose=verbose, amount=amount)
 	raw_to_vec = dict(zip(raw, data_x))
 	if verbose:
 		print("data loaded and has length:", len(data_x), "with each part being: ", data_x[0].shape)
 	oracle = o.lookup_table(n_heavy_hitters, decay)
 	if dataset == 'aol':
-		nn = nn_model.lstm_model()
+		nn = nn_model.lstm_model(n_layers=n_layers)
 	else:
-		nn = nn_model.model()
+		nn = nn_model.model(n_layers=n_layers)
 	j = 0
 	for i in range(len(data_x)):
 		oracle.increment_count(raw[i])
