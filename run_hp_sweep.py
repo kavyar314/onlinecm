@@ -12,8 +12,8 @@ outfile = "aol_parameter_sweep.csv"
 
 def hp_sweep():
 	for lay in n_layers:
-		for h in n_samples:
-			for t in time_between_train:
+		for h in n_samples[::-1]:
+			for t in time_between_train[::-1]:
 				for decay in f_list:
 					for ep in n_gradient_updates:
 						model, params = trainer.train('aol', n_samples=h, epochs=ep, n_heavy_hitters=h, decay=decay, n_before_update=t, n_layers=lay)
