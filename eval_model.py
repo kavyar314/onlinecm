@@ -22,11 +22,11 @@ def evaluate_model(model, dataset, amount=4000, eps=0.001, verbose=False):
 
 	hh_within_ep = frac_within_epsilon(pred_y_hh, hh_y, eps=eps)
 	not_hh_within_ep = frac_within_epsilon(pred_y_not_hh, not_hh_y, eps=eps)
-
+'''
 	hh_k_hh = k_hh(pred_y_hh, hh_y, True)
 	not_hh_k_hh = k_hh(pred_y_not_hh, not_hh_y, False)
-
-	return hh_within_ep, not_hh_within_ep, hh_k_hh, not_hh_k_hh
+'''
+	return hh_within_ep, not_hh_within_ep#, hh_k_hh, not_hh_k_hh
 
 
 def gen_lookup_table(dataset, amount, verbose):
