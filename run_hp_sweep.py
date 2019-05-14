@@ -1,24 +1,25 @@
 import trainer, eval_model, config
 
 # n_heavy_hitters, time_between_train, f, n_gradient_updates
-n_heavy_hitters = [20, 40, 50, 60]
-time_between_train = [10, 20, 50, 75, 100]
+n_samples = [20, 40, 50, 60]
+time_between_train = [50, 75, 100, 200, 500, 1000]
 f_list = config.f_list
-n_gradient_updates = [1, 2, 3, 4, 10]
+n_gradient_updates = [1, 2, 3, 4, 10, 20]
 
-outfile = "parameter_sweep.csv"
+outfile = "aol_parameter_sweep.csv"
 # outfile
 
 def hp_sweep():
-	for h in n_heavy_hitters:
+	for h in n_samples:
 		for t in time_between_train:
 			for decay in f_list:
 				for ep in n_gradient_updates:
-					model, params = trainer.train(n_samples=h, epochs=ep, n_heavy_hitters=h, decay=decay, n_before_update=t)
+					model, params = trainer.train('aol', n_samples=h, epochs=ep, n_heavy_hitters=h, decay=decay, n_before_update=t)
 					print("completed:", params)
-					pp_f, ap_f, pn_f, an_f = eval_model.evaluate_model(model, full=True)
-					pp_n, ap_n, pn_n, an_n = eval_model.evaluate_model(model, full=False)
-					write_string = "%d, %d, %d, %d, %04f, %04f, %04f, %04f\n" % (h, t, decay, ep, pp_f/ap_f, pn_f/an_f, pp_n/ap_n, pn_n/an_n)
+					hh_within_e4, not_hh_within_e4 = eval_model.evaluate_model(model, 'aol', eps=0.0001)
+					hh_within_e3, not_hh_within_e4 = eval_model.evaluate_model(model, 'aol', eps=0.001)
+					hh_within_e2, not_hh_within_e4 = eval_model.evaluate_model(model, 'aol', eps=0.01)
+					write_string = "%d, %d, %02f, %d, %04f, %04f, %04f, %04f\n" % (h, t, decay, ep, hh_within_e4, not_hh_within_e4, hh_within_e3, not_hh_within_e4, hh_within_e2, not_hh_within_e4)
 					with open(outfile, 'a') as f:
 						f.write(write_string)
 
