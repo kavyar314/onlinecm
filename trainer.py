@@ -34,7 +34,7 @@ def train(dataset, verbose=False, n_samples=config.half_batch, epochs=config.n_g
 				#	k randomly selected non-heavy hitters
 			actual_n_samples = len(positives)
 			if verbose: print(actual_n_samples)
-			negatives, y_neg = oracle.sample_elements(hh=False, n_samples=actual_n_samples)
+			negatives, y_neg = oracle.sample_elements(hh=False, n_samples=5*actual_n_samples)
 			full_training_x = np.array([np.array(raw_to_vec[x]) for x in positives + negatives])
 			full_training_y = np.array(y_pos + y_neg)
 			print(full_training_x.shape)
@@ -43,6 +43,8 @@ def train(dataset, verbose=False, n_samples=config.half_batch, epochs=config.n_g
 				loss_thres = 0.5 * initial_loss
 				print(initial_loss, loss_thres, i)
 			if full_training_x.shape[0] > 0:
+				print(len(y_pos), len(y_neg))
+				print(sum(y_pos)/len(y_pos), sum(y_neg)/len(y_neg))
 				loss = nn.evaluate(full_training_x, full_training_y)
 				print(loss, loss_thres, i)
 				if loss < loss_thres:
