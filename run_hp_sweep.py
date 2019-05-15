@@ -1,10 +1,10 @@
 import trainer, eval_model, config
 
 # n_heavy_hitters, time_between_train, f, n_gradient_updates
-n_samples = [20, 40, 50, 60]
-time_between_train = [200]
+n_samples = [50, 60]
+time_between_train = [100, 200, 500]
 f_list = config.f_list
-n_gradient_updates = [1, 2, 3, 4, 10, 20]
+n_gradient_updates = [2, 4, 10, 20]
 # n_layers = [4, 3]
 
 outfile = "aol_parameter_sweep_rnn.csv"
