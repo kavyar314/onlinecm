@@ -18,7 +18,7 @@ def hp_sweep():
 				for ep in n_gradient_updates:
 					model, params = trainer.train('aol', n_samples=h, epochs=ep, n_heavy_hitters=h, decay=decay, n_before_update=t)#, n_layers=lay)
 					print("completed:", params)
-					[hh_within_e4, hh_within_e3, hh_within_e2],[not_hh_within_e4, not_hh_within_e3, not_hh_within_e2] = eval_model.evaluate_model(model, 'aol', eps_list=[0.0001, 0.001, 0.01])
+					[hh_within_e4, hh_within_e3, hh_within_e2],[not_hh_within_e4, not_hh_within_e3, not_hh_within_e2] = eval_model.evaluate_model(model, 'aol', eps_list=[0.1, 0.5, 1])
 					write_string = "%d, %d, %02f, %d, %04f, %04f, %04f, %04f, %04f, %04f\n" % (h, t, decay, ep, hh_within_e4, not_hh_within_e4, hh_within_e3, not_hh_within_e3, hh_within_e2, not_hh_within_e2)
 					with open(outfile, 'a') as f:
 						f.write(write_string)
