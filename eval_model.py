@@ -4,7 +4,7 @@ import config
 
 import numpy as np
 
-def evaluate_model(model, dataset, amount=4000, eps=0.001, verbose=False):
+def evaluate_model(model, dataset, amount=4000, eps_list=[0.0001, 0.001, 0.01], verbose=False):
 	'''
 	:param full: boolean. True if full stream, if False, then start evaluation from where training stream ended (config.len_stream)
 	'''
@@ -20,8 +20,8 @@ def evaluate_model(model, dataset, amount=4000, eps=0.001, verbose=False):
 	pred_y_hh = model.predict(np.array([list(mapping[hh_x[i]]) for i in range(len(hh_x))]))
 	pred_y_not_hh = model.predict(np.array([list(mapping[not_hh_x[i]]) for i in range(len(not_hh_x))]))
 
-	hh_within_ep = frac_within_epsilon(pred_y_hh, hh_y, eps=eps)
-	not_hh_within_ep = frac_within_epsilon(pred_y_not_hh, not_hh_y, eps=eps)
+	hh_within_ep = frac_within_epsilon(pred_y_hh, hh_y, eps_list=eps_list)
+	not_hh_within_ep = frac_within_epsilon(pred_y_not_hh, not_hh_y, eps_list=eps_list)
 	'''
 	hh_k_hh = k_hh(pred_y_hh, hh_y, True)
 	not_hh_k_hh = k_hh(pred_y_not_hh, not_hh_y, False)
@@ -38,8 +38,8 @@ def gen_lookup_table(dataset, amount, verbose):
 		oracle_table.increment_count(d)
 	return oracle_table, dict(zip(raw_data, data))
 		
-def frac_within_epsilon(pred_y, act_y, eps=0.001):
-	return sum([abs(pred_y[p][0]-act_y[p]) <= eps for p in range(len(pred_y))])/len(act_y)
+def frac_within_epsilon(pred_y, act_y, eps_list=[0.0001, 0.001, 0.01]):
+	return [sum([abs(pred_y[p][0]-act_y[p]) <= eps for p in range(len(pred_y))])/len(act_y) for eps in eps_list]
 
 def k_hh(pred_y, act_y, hh):
 	one_over_k = sum(act_y)/len(act_y)
