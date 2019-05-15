@@ -7,7 +7,7 @@ f_list = config.f_list
 n_gradient_updates = [2, 4, 10, 20]
 # n_layers = [4, 3]
 
-outfile = "aol_parameter_sweep_rnn.csv"
+outfile = "aol_parameter_sweep_rnn_logstuff.csv"
 # outfile
 
 def hp_sweep():
