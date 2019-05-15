@@ -18,7 +18,7 @@ def train(dataset, verbose=False, n_samples=config.half_batch, epochs=config.n_g
 		print("data loaded and has length:", len(data_x), "with each part being: ", data_x[0].shape)
 	oracle = o.lookup_table(n_heavy_hitters, decay)
 	if dataset == 'aol':
-		nn = nn_model.lstm_model(n_layers=n_layers)
+		nn = nn_model.rnn_model()
 	else:
 		nn = nn_model.model(n_layers=n_layers)
 	j = 0

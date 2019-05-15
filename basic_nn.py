@@ -1,7 +1,8 @@
 import config
 import simple_rnn
 
-from keras.models import Sequential
+import keras
+from keras.models import Sequential, Model
 from keras.layers import Dense, LSTM, RNN
 
 def model(n_layers=config.n_layers):
@@ -35,11 +36,22 @@ def lstm_model(n_units=512, n_layers=5):
 
 	return model
 
-def rnn_model(n_emb, n_hidden):
+def rnn_model(n_emb=64, n_hidden=64):
 	rnn_cell = simple_rnn.SimpleRNNCell(n_emb, n_hidden)
+	x = keras.Input((config.trun_len, config.trun_len))
+	layer = RNN(rnn_cell)
+	emb = layer(x)
+	fc_1 = Dense(32, activation='relu')(emb)
+	y = Dense(1, activation='sigmoid')(fc_1)
+
+	model = Model(inputs=[x], outputs=[y])
+	model.compile(loss='mean_squared_error', optimizer='sgd')
+
+	return model
+	'''
 	model = Sequential()
 	model.add(RNN(rnn_cell, input_shape=(config.trun_len, config.trun_len)))
 	model.add(Dense(32, activation='relu'))
 	model.add(Dense(1, activation='sigmoid'))
 	model.compile(loss='mean_squared_error', optimizer='sgd')
-	
+	'''
