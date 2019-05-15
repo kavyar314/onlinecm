@@ -42,10 +42,10 @@ def rnn_model(n_emb=64, n_hidden=64):
 	layer = RNN(rnn_cell)
 	emb = layer(x)
 	fc_1 = Dense(32, activation='relu')(emb)
-	y = Dense(1, activation='sigmoid')(fc_1)
+	y = Dense(1, activation='linear')(fc_1)
 
 	model = Model(inputs=[x], outputs=[y])
-	model.compile(loss='mean_squared_logarithmic_error', optimizer='sgd')
+	model.compile(loss='mean_squared_error', optimizer='rmsprop')
 
 	return model
 	'''
