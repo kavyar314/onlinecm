@@ -45,7 +45,7 @@ def rnn_model(n_emb=64, n_hidden=64):
 	y = Dense(1, activation='sigmoid')(fc_1)
 
 	model = Model(inputs=[x], outputs=[y])
-	model.compile(loss='mean_squared_error', optimizer='sgd')
+	model.compile(loss='mean_squared_logarithmic_error', optimizer='sgd')
 
 	return model
 	'''
