@@ -43,8 +43,8 @@ def train(dataset, verbose=False, n_samples=config.half_batch, epochs=config.n_g
 				loss_thres = 0.5 * initial_loss
 				print(initial_loss, loss_thres, i)
 			if full_training_x.shape[0] > 0:
-				print(len(y_pos), len(y_neg))
-				print(sum(y_pos)/len(y_pos), sum(y_neg)/len(y_neg))
+				#print(len(y_pos), len(y_neg))
+				#print(sum(y_pos)/len(y_pos), sum(y_neg)/len(y_neg))
 				loss = nn.evaluate(full_training_x, full_training_y)
 				print(loss, loss_thres, i)
 				if loss < loss_thres:
