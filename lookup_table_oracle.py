@@ -1,6 +1,8 @@
 import config
 import random
 
+import math
+
 
 class lookup_table():
 	def __init__(self, n_heavy_hitters=config.n_heavy_hitters, decay=config.decay, reservoir=config.limit_light):
@@ -28,6 +30,12 @@ class lookup_table():
 		# print(len(decreasing_frequencies), self.n_heavy_hitters + 1, self.init_n_heavy_hitters + 1)
 		if element in self.table.keys():
 			# check more stuff
+			'''
+			if self.table[element]/sum(self.table.values()) < 0.001:
+				return False
+			else:
+				return True
+			'''
 			if len(decreasing_frequencies) <= self.n_heavy_hitters + 1:
 				return True
 			elif self.table[element] > decreasing_frequencies[self.n_heavy_hitters]:
@@ -84,8 +92,9 @@ class lookup_table():
 			# stuff
 		num_samples = min([n_samples, len(sample_list)])
 		sampled_elements = [random.choice(sample_list) for _ in range(num_samples)]
-		labels = [self.table[x]/n_elements for x in sampled_elements]
+		labels = [math.log(self.table[x]/n_elements) for x in sampled_elements]
 		return sampled_elements, labels
 
 	def flush(self):
+		#print(self.table)
 		self.table = {}
