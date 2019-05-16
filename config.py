@@ -9,7 +9,7 @@ decay = f_list[0]
 
 n_gradient_updates = 20
 
-len_stream = 10000
+len_stream = 300000
 
 half_batch=16
 
