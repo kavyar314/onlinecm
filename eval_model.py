@@ -17,16 +17,13 @@ def evaluate_model(model, dataset, amount=4000, eps_list=[0.0001, 0.001, 0.01], 
 		print([k for k in table_for_eval.table.keys() if k not in mapping.keys()])
 		print([k for k in mapping.keys() if k not in table_for_eval.table.keys()])
 
-	pred_y_hh = model.predict(np.array([list(mapping[hh_x[i]]) for i in range(len(hh_x))]))
-	pred_y_not_hh = model.predict(np.array([list(mapping[not_hh_x[i]]) for i in range(len(not_hh_x))]))
+	pred_y_hh = model.predict(np.array([list(hh_x[i]) for i in range(len(hh_x))]))
+	pred_y_not_hh = model.predict(np.array([list(not_hh_x[i]) for i in range(len(not_hh_x))]))
 
-	hh_within_ep = frac_within_epsilon(pred_y_hh, hh_y, eps_list=eps_list)
-	not_hh_within_ep = frac_within_epsilon(pred_y_not_hh, not_hh_y, eps_list=eps_list)
-	'''
-	hh_k_hh = k_hh(pred_y_hh, hh_y, True)
-	not_hh_k_hh = k_hh(pred_y_not_hh, not_hh_y, False)
-	'''
-	return hh_within_ep, not_hh_within_ep#, hh_k_hh, not_hh_k_hh
+	correct_hh = sum([p >= 0.5 for p in pred_y_hh])
+	correct_not_hh = sum([p < 0.5 for p in pred_y_not_hh])
+
+	return correct_hh[0], len(pred_y_hh), correct_not_hh[0], len(pred_y_not_hh)
 
 
 def gen_lookup_table(dataset, amount, verbose):
