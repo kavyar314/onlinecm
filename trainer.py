@@ -48,7 +48,8 @@ def train(dataset, verbose=False, n_samples=config.half_batch, epochs=config.n_g
 				loss = nn.evaluate(full_training_x, full_training_y)
 				print(loss, loss_thres, i)
 				if loss < loss_thres:
-					oracle.decay_n_heavy_hitters()
+					n_samples = decay * n_samples
+					# oracle.decay_n_heavy_hitters()
 				# oracle.flush()
 				#	fit for n_gradient_updates epochs
 				print(full_training_x.shape)
