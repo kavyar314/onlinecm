@@ -92,7 +92,7 @@ class lookup_table():
 			# stuff
 		num_samples = min([n_samples, len(sample_list)])
 		sampled_elements = [random.choice(sample_list) for _ in range(num_samples)]
-		labels = [math.log(self.table[x]/n_elements) for x in sampled_elements]
+		labels = [1 if self.check_hh(x) else 0 for x in sampled_elements]
 		return sampled_elements, labels
 
 	def flush(self):
