@@ -89,3 +89,4 @@ class lookup_table():
 
 	def flush(self):
 		self.table = {}
+		self.len_stream = 0
